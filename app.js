@@ -34,18 +34,20 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // render the error pages
   if(err.status === 404){
     res.render('page-not-found', err);
   }
   else{
     res.status(err.status || 500);
-    res.render('error');
+    err.status = 500;
+    err.message = "Something has gone very wrong. Error code: ";
+    res.render('error', {title:"Not Found", err});
   }
  
 });
 
-//set port
+//set port to 3000
 app.set('port', process.env.PORT || 3000);
 
 //test the database connection

@@ -1,5 +1,9 @@
 extends layout
 
 block content
-  h1 Server Error
-  p Sorry there was an unexpected error
+  h1 Server Error #{error.status}
+  p Sorry! There was an unexpected error on the server.
+  p 
+      a(class="button", href="/books") Home
+  script.
+    console.error(`#{error.message} #{error.status}`)

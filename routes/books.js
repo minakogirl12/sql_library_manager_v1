@@ -14,16 +14,10 @@ function asyncHandler(cb) {
   }
 }
 
-/* GET home page. */
+/* GET List of all books page and home*/
 router.get('/', asyncHandler(async (req, res) => {
   let books = await Book.findAll();
-  res.json(books);
-}));
-
-/* GET List of all books page */
-router.get('/all', asyncHandler(async (req, res) => {
-  let books = await Book.findAll();
-  res.render('all-books', {title:'Books', books})
+  res.render('index', {title:'Books', books})
 }));
 
 /* GET Create a new book page */
@@ -78,7 +72,16 @@ router.post('/:id', asyncHandler(async (req, res) => {
 
 /* POST Delete book from database */
 router.post('/:id/delete', asyncHandler(async (req, res) => {
-  res.redirect('/books');
+  
+  const book = await Book.findByPk(req.params.id);
+  
+  if(book){
+    await book.destroy();
+    res.redirect('/books/all');
+  }
+  else{
+    res.sendStatus(400);
+  }
 }));
 
 
