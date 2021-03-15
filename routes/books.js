@@ -37,7 +37,9 @@ router.post('/new', asyncHandler(async (req, res) => {
 
     if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
       const errors = error.errors.map(err => err.message);
-      res.status(400).json({ errors });   
+      //display form with errors
+      console.log(req.body);
+      res.status(400).render('new-book', { errors, book: req.body});   
     } else {
       throw error;
     }
@@ -77,12 +79,16 @@ router.post('/:id/delete', asyncHandler(async (req, res) => {
   
   if(book){
     await book.destroy();
-    res.redirect('/books/all');
+    res.redirect('/books');
   }
   else{
     res.sendStatus(400);
   }
 }));
 
+/* POST Search for a book */
+router.post('/search', asyncHandler(async (req, res) => {
+  console.log('yo');
+}));
 
 module.exports = router;
